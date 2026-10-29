@@ -1,0 +1,14 @@
+# Real-robot settings for arduino_driver (edit, then rebuild: colcon build --packages-select jetbot)
+arduino_driver:
+  ros__parameters:
+    port: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+    baud: 115200
+    wheel_separation: 0.20   # m, same as the URDF
+    max_wheel_speed: 0.60    # m/s your wheels reach at PWM 255 - calibrate this
+    min_pwm: 70              # lowest PWM that actually turns the wheels
+    max_pwm: 255
+    forward_sign: 1          # set -1 if "forward" drives the real robot backward
+    turn_sign: -1            # set 1 if the real robot turns the opposite way to Gazebo
+    rate: 20.0               # Hz
+    cmd_timeout: 0.0         # 0 = keep the last command (same as Gazebo); e.g. 0.5 = stop if commands stop
+    boot_wait: 2.0           # s, the Uno restarts when the port opens
