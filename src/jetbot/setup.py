@@ -13,9 +13,9 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
-        # Include all URDF files
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
         (os.path.join('share', package_name, 'config'), glob('config/*')),
+        (os.path.join('share', package_name, 'rviz'), glob('rviz/*')),
         (os.path.join('share', package_name, 'params'), glob('params/*')),
     ],
     install_requires=['setuptools', 'pyserial'],
@@ -32,6 +32,9 @@ setup(
     entry_points={
         'console_scripts': [
             'arduino_driver = jetbot.arduino_driver:main',
+            'obstacle_guard = jetbot.obstacle_guard:main',
+            'floor_camera = jetbot.floor_camera:main',
+            'camera_calibrate = jetbot.camera_calibrate:main',
         ],
     },
 )

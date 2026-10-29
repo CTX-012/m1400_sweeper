@@ -308,7 +308,7 @@
   <gazebo reference="lidar_link">
     <sensor name="rplidar_a1" type="gpu_lidar">
       <ignition_frame_id>lidar_link</ignition_frame_id>
-      <topic>/scan</topic>
+      <topic>/sim/scan</topic>
       <update_rate>10</update_rate>
       <always_on>true</always_on>
       <visualize>true</visualize>

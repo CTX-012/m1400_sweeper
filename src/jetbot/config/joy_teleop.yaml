@@ -1,4 +1,4 @@
-# Gamepad -> /cmd_vel  (same stick layout as your old teleop_guard_drive.py)
+# Gamepad -> /cmd_vel_raw -> obstacle_guard -> /cmd_vel
 joy_node:
   ros__parameters:
     device_id: 0            # first gamepad (/dev/input/js0)

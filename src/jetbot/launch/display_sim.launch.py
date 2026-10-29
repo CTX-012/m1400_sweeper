@@ -11,9 +11,8 @@ def generate_launch_description():
     pkg_name = 'jetbot'
     pkg_share = get_package_share_directory(pkg_name)
 
-    urdf_file_path = os.path.join(
-        pkg_share, 'urdf', 'jetbot.urdf'
-    )
+    urdf_file_path = os.path.join(pkg_share, 'urdf', 'jetbot.urdf')
+    rviz_config = os.path.join(pkg_share, 'rviz', 'jetbot.rviz')
 
     with open(urdf_file_path, 'r') as infp:
         robot_description_content = infp.read()
@@ -29,18 +28,12 @@ def generate_launch_description():
         }]
     )
 
-    # 2. Gazebo Sim
+    # 2. Gazebo Sim (empty world)
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory('ros_gz_sim'),
-                'launch',
-                'gz_sim.launch.py'
-            )
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        launch_arguments={
-            'gz_args': 'empty.sdf -r'
-        }.items()
+        launch_arguments={'gz_args': 'empty.sdf -r'}.items()
     )
 
     # 3. Spawn robot
@@ -48,32 +41,23 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         output='screen',
-        arguments=[
-            '-string', robot_description_content,
-            '-name', 'jetbot',
-            '-z', '0.05'
-        ]
+        arguments=['-string', robot_description_content, '-name', 'jetbot', '-z', '0.05']
     )
 
     # 4. Gazebo <-> ROS 2 bridge
-    bridge_config_path = os.path.join(
-        pkg_share, 'config', 'bridge_config.yaml'
-    )
-
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         output='screen',
-        parameters=[{
-            'config_file': bridge_config_path
-        }]
+        parameters=[{'config_file': os.path.join(pkg_share, 'config', 'bridge_config.yaml')}]
     )
 
-    # 5. RViz2
+    # 5. RViz2 with the JetBot layout (robot, real LiDAR, safety zone)
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         output='screen',
+        arguments=['-d', rviz_config],
         parameters=[{'use_sim_time': True}]
     )
 

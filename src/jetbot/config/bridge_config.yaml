@@ -4,8 +4,9 @@
   gz_type_name: "ignition.msgs.Model"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/scan"
-  gz_topic_name: "/scan"
+# simulated LiDAR (the empty world has nothing to see); the REAL LiDAR uses /scan
+- ros_topic_name: "/sim/scan"
+  gz_topic_name: "/sim/scan"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "ignition.msgs.LaserScan"
   direction: GZ_TO_ROS
@@ -28,11 +29,19 @@
   gz_type_name: "ignition.msgs.Odometry"
   direction: GZ_TO_ROS
 
+# guarded command (from obstacle_guard) -> Gazebo robot
 - ros_topic_name: "/cmd_vel"
   gz_topic_name: "/cmd_vel"
   ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "ignition.msgs.Twist"
-  direction: BIDIRECTIONAL
+  direction: ROS_TO_GZ
+
+# Gazebo Teleop panel (set its topic to /cmd_vel_raw) -> obstacle_guard
+- ros_topic_name: "/cmd_vel_raw"
+  gz_topic_name: "/cmd_vel_raw"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "ignition.msgs.Twist"
+  direction: GZ_TO_ROS
 
 - ros_topic_name: "/tf"
   gz_topic_name: "/tf"

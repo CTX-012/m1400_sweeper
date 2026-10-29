@@ -1,0 +1,34 @@
+# obstacle_guard v3 settings (edit, then: colcon build --packages-select jetbot)
+# "free path" = how far the robot can still drive along its current path before its
+# edge (robot_radius + safety_margin) reaches an obstacle.
+obstacle_guard:
+  ros__parameters:
+    robot_radius: 0.12          # m: centre -> outer edge of the wheels
+    safety_margin: 0.03         # m: extra space kept around the robot
+    stop_distance: 0.17         # m of free path left when stopped -> 15 cm from the robot edge
+    decel: 0.6                  # m/s^2: how hard the robot slows (learning fixes errors here)
+    latency: 0.15               # s: sensor -> motors reaction time
+    release_margin: 0.03        # m: free path must exceed the stop point + this to drive again
+    clear_scans: 2              # ...for this many scans in a row
+    min_points: 2               # readings needed to count as an obstacle
+    min_range: 0.15             # m: RPLIDAR A1 blind zone
+    max_range: 6.0
+    horizon: 1.2                # m of path checked
+    # Hide the robot's own parts / USB cables from the LiDAR: [bearing deg, +/- deg, up to m, ...]
+    # 180 deg = straight behind. Disable a sector by setting its distance to 0.0.
+    ignore_sectors: [180.0, 35.0, 0.25]
+    lidar_yaw_offset: 0.0       # rad: 3.14159 if obstacles in front show up behind the robot
+    lidar_frame: lidar_link
+    use_camera: true            # also stop for low obstacles seen by floor_camera
+    camera_timeout: 0.5
+    blind_hold: true
+    blind_band: 0.07
+    learn_stops: true           # measure every stop and correct the braking point
+    learn_gain: 0.5
+    learn_file: ~/.ros/jetbot_guard_learned.yaml
+    scan_timeout: 0.5           # s: no LiDAR data -> stop
+    path_step: 0.01
+    scan_stamp_delay: 0.1
+    rate: 20.0
+    log_period: 0.5
+    self_check_scans: 30
