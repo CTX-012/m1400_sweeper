@@ -1,0 +1,24 @@
+# Gamepad -> /cmd_vel  (same stick layout as your old teleop_guard_drive.py)
+joy_node:
+  ros__parameters:
+    device_id: 0            # first gamepad (/dev/input/js0)
+    deadzone: 0.12
+    autorepeat_rate: 20.0   # keep publishing while a stick is held
+
+teleop_twist_joy_node:
+  ros__parameters:
+    require_enable_button: false   # true = must hold enable_button to move (safer)
+    enable_button: 4               # only used when require_enable_button is true
+    enable_turbo_button: -1        # set to a button number to get the turbo speeds
+    axis_linear:
+      x: 1                  # left stick up/down
+    scale_linear:
+      x: 0.3                # m/s at full stick (real top speed is ~0.6)
+    scale_linear_turbo:
+      x: 0.6
+    axis_angular:
+      yaw: 0                # left stick left/right
+    scale_angular:
+      yaw: 1.5              # rad/s at full stick
+    scale_angular_turbo:
+      yaw: 3.0
